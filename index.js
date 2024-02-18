@@ -3,20 +3,27 @@ const express = require('express');
 const app = express();
 app.listen(3000);
 
+app.set('view engine', 'ejs')
+
 app.get('/', (req, res) => {
-    res.sendFile('./views/index.html', {root : __dirname})
+    const frameworks = [
+        {name : "React"}, 
+        {name : "Vue"}, 
+        {name : "Angular"}, 
+    ];
+    res.render('index', {title : "Home", frameworks})
 })
 
 app.get('/about', (req, res) => {
-    res.sendFile('./views/about.html', {root : __dirname})
+    res.render('about', {title : "About"})
 })
 
 app.get('/about-us', (req, res) => {
-    res.redirect('/about')
+    res.render('about')
 })
 
-app.get('/contact', (req, res) => {
-    res.sendFile('./views/contact-me.html', {root : __dirname})
+app.get('/contact-me', (req, res) => {
+    res.render('contact-me', {title : "Contact"})
 })
 
 app.use((req,res) => {
