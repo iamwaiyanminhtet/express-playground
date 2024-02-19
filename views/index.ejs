@@ -11,9 +11,15 @@
 
     <h1>Home</h1>
 
-    <% if(frameworks.length > 0) {%>
-        <% frameworks.forEach(framework => {%>
-            <p><%= framework.name%></p>
+    <% if(blogs.length > 0) {%>
+        <% blogs.forEach(blog => {%>
+            <div>
+                <a href="/blogs/<%= blog._id%>" style="color: antiquewhite">
+                    <h3><%= blog.title %></h3>
+                </a>
+                <p><%= blog.post %></p>
+                <hr>
+            </div>
         <% }) %>
     <% } %>
 </body>

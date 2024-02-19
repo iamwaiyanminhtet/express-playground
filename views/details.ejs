@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+</head>
+<body>
+
+    <%- include('./partials/nav') %>
+
+    <h1><%= blog.title %></h1>
+    <p><%= blog.post %></p>
+    <input type="hidden" value="<%= blog._id%>" id="blogId">
+
+    <div>
+        <a style="
+        background-color: brown; 
+        color: antiquewhite;
+        padding: 0.5rem;
+        margin-block: 0.5rem;
+        border-radius : 5px" data-blogId="<%= blog._id %>" id="deleteBtn">Delete</a>
+    </div>
+
+    <hr>
+
+    <form action="/blog/update/<%= blog._id%>" method="post">
+        <div>
+            <label for="title">Title : </label>
+            <input type="text" name="title" value="<%= blog.title%>">
+        </div>
+        <div>
+            <label for="post">Post : </label>
+            <textarea name="post" cols="30" rows="10" ><%= blog.post%></textarea>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const deleteBtn = document.querySelector('#deleteBtn');
+        deleteBtn.addEventListener('click', (e) => {
+            const deleteUrl = `/blog/${document.querySelector('#blogId').value}`;
+              fetch(deleteUrl, {
+                    method : "DELETE"
+                })
+                .then(res => res.json())
+                .then(data => window.location.href = data.redirect)
+                .catch(err => console.log(`client error`))
+        });
+    });
+</script>
+</html>
