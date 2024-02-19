@@ -1,9 +1,10 @@
 const express = require('express');
 
 const app = express();
-const mongoose = require('mongoose');
 const Blog = require("./models/blogs");
+const mongoose = require('mongoose');
 const { render } = require('ejs');
+const blogRouter = require('./routes/blogs')
 
 // connect to mongodb
 const dbURI = "mongodb://127.0.0.1:27017/blogs"
@@ -50,39 +51,7 @@ app.get('/addBlog',(req,res) => {
     res.render('addBlog', {title : "Add Blog"})
 })
 
-app.get('/blogs/:id', (req, res) => {
-    const id = req.params.id;
-    Blog.findById(id)
-        .then((result) => res.render('details',{blog:result}))
-})
-
-// add new blog to the db
-app.post('/add-blog', (req, res) => {
-    const blog = new Blog(req.body)
-
-    blog.save()
-        .then(() => res.redirect('/'))
-        .catch((err) => console.log(err))
-})
-
-// update blog
-app.post('/blog/update/:id',(req,res) => {
-    Blog.updateOne({_id :req.params.id}, req.body)
-        .then(result => res.redirect('/'))
-        .catch(err => console.log(err))
-})
-
-// delete blog
-app.delete('/blog/:id', (req, res) => {
-    Blog.findByIdAndDelete(req.params.id)
-      .then(result => {
-        res.json({ redirect: '/' });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  });
-
+app.use('/blog', blogRouter)
 
 app.use((req,res) => {
     res.render('404', {title : "Not Found"})
