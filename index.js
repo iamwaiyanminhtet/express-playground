@@ -5,6 +5,7 @@ const Blog = require("./models/blogs");
 const mongoose = require('mongoose');
 const { render } = require('ejs');
 const blogRouter = require('./routes/blogs')
+const authorRouter = require('./routes/author')
 
 // connect to mongodb
 const dbURI = "mongodb://127.0.0.1:27017/blogs"
@@ -52,6 +53,7 @@ app.get('/addBlog',(req,res) => {
 })
 
 app.use('/blog', blogRouter)
+app.use(authorRouter);
 
 app.use((req,res) => {
     res.render('404', {title : "Not Found"})

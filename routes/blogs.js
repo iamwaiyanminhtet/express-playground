@@ -3,6 +3,13 @@ const express = require('express');
 
 const router = express.Router();
 
+router.get('/testing', (req, res) => {
+  Blog.find()
+  .populate("author")
+  .then(result => res.json(result))
+  .catch((err) => console.log(err))
+})
+
 router.get('/:id', (req, res) => {
     const id = req.params.id;
     Blog.findById(id)
